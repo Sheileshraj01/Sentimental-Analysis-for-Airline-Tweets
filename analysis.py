@@ -3,9 +3,7 @@ import pandas as pd
 import re
 import nltk
 import sklearn
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
+
 
 airline_tweets = pd.read_csv('Tweets.csv')
 airline_tweets.head()
@@ -42,42 +40,41 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 vectorizer = TfidfVectorizer (max_features=2500, min_df=7, max_df=0.8, stop_words=stopwords.words('english'))
 processed_features = vectorizer.fit_transform(processed_features).toarray()
 
-from sklearn.model_selection import train_test_split
-
-X_train, X_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.2, random_state=0)
-
+#Random Forest classifier
 from sklearn.ensemble import RandomForestClassifier
-text_classifier = RandomForestClassifier(n_estimators=200, random_state=0)
-text_classifier.fit(X_train, y_train)
-rf_predictions = text_classifier.predict(X_test)
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.2, random_state=0)
+text_classifier = RandomForestClassifier(n_estimators=100, random_state=0)
+text_classifier.fit(x_train, y_train)
+predictions = text_classifier.predict(x_test)
+from sklearn.metrics import accuracy_score
+print('accuracy score for random forest', accuracy_score(y_test, predictions)) 
 
-nb_classifier = MultinomialNB()
-lr_classifier = LogisticRegression()
-svm_classifier = SVC(kernel='linear')
+#Logistic Regression
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(processed_features, labels, test_size=0.2)
+lr = LogisticRegression()
+lr.fit(x_train, y_train)
+lr.fit(x_test, y_test)
+predictions = lr.predict(x_test)
+print('accuracy score for logistic regression', accuracy_score(y_test, predictions)) 
 
-nb_classifier.fit(X_train, y_train)
-nb_predictions = nb_classifier.predict(X_test)
 
-lr_classifier.fit(X_train, y_train)
-lr_predictions = lr_classifier.predict(X_test)
+#Naive Bayes classifier
+from sklearn.naive_bayes import MultinomialNB
+model = MultinomialNB()
+model.fit(x_train, y_train)
+model.fit(x_test, y_test)
+predictions= model.predict(x_test)
+from sklearn.metrics import accuracy_score
+print('accuracy score for naive bayes classifier', accuracy_score(predictions, y_test))
 
-svm_classifier.fit(X_train, y_train)
-svm_predictions = svm_classifier.predict(X_test)
-
-from sklearn.metrics import confusion_matrix, accuracy_score
-
-print("Random Forest Classifier:")
-print(confusion_matrix(y_test, rf_predictions))
-print('Accuracy score:', accuracy_score(y_test, rf_predictions))
-
-print("\nNaive Bayes Classifier:")
-print(confusion_matrix(y_test, nb_predictions))
-print('Accuracy score:', accuracy_score(y_test, nb_predictions))
-
-print("\nLogistic Regression:")
-print(confusion_matrix(y_test, lr_predictions))
-print('Accuracy score:', accuracy_score(y_test, lr_predictions))
-
-print("\nSupport Vector Machine:")
-print(confusion_matrix(y_test, svm_predictions))
-print('Accuracy score:', accuracy_score(y_test, svm_predictions))
+#Support Vector Machine classifier
+from sklearn.svm import SVC
+svm = SVC()
+svm.fit(x_train, y_train)
+predictions = svm.predict(x_test)
+from sklearn.metrics import accuracy_score
+print('accuracy score for support vector machine', accuracy_score(y_test, predictions))
