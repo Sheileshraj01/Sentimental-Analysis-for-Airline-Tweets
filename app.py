@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 def main():
     st.title("Sentimental Analysis on Airline Tweets ✈️")
     st.sidebar.title("Sentiment Analysis on Tweets about US Airlines ✈️")
-    st.sidebar.subheader("By [Richard Cornelius Suwandi](https://github.com/richardcsuwandi)")
-    st.sidebar.markdown("[![View on GitHub](https://img.shields.io/badge/GitHub-View_on_GitHub-blue?logo=GitHub)](https://github.com/richardcsuwandi/airline-sentiment)")
+    st.sidebar.subheader("By [Sheilesh Raj and Sameer](https://github.com/Sheileshraj01)")
+    st.sidebar.markdown("[![View on GitHub](https://img.shields.io/badge/GitHub-View_on_GitHub-blue?logo=GitHub)](https://github.com/Sheileshraj01/Sentimental-Analysis-for-Airline-Tweets)")
     st.subheader("A data-driven web app that visualizes various sentiment and exploratory analysis on tweets about US airlines.")
     st.sidebar.markdown("A data-driven web app that visualizes various sentiment and exploratory analysis on tweets about US airlines.")
 
@@ -94,4 +94,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+    
 
